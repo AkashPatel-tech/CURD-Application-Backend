@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Product = require("./models/product.model.js");
 const productRoute = require("./routes/product.route.js");
+const catalogRoute = require("./routes/catalog.route.js");
 const app = express();
 
 // middlewear
@@ -10,13 +11,14 @@ app.use(express.urlencoded({ extended: false }));
 
 // router
 app.use("/api/products", productRoute);
+app.use("/api/catalogs", catalogRoute);
 
-app.listen(3000, () => {
-  console.log("server is running on port 3000");
-});
+// app.listen(3000, () => {
+//   console.log("server is running on port 3000");
+// });
 
 app.get("/", (req, res) => {
-  res.send("Hello from Node API server updated!");
+  res.send("Hello from Node API server with Catalogs!");
 });
 
 mongoose

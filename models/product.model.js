@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const ProductSchema = mongoose.Schema(
+const ProductSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -20,6 +20,11 @@ const ProductSchema = mongoose.Schema(
     image: {
       type: String,
       required: false,
+    },
+    catalogId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Catalog",
+      required: true,
     },
   },
   {
