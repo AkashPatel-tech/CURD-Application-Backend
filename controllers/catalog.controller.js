@@ -11,20 +11,18 @@ const getCatalogs = async (req, res) => {
   }
 };
 
-// Get single catalog with its products
+// Get catalog by ID with its products
 const getCatalogWithProducts = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const catalog = await Catalog.findById(id);
+    const catalog = await Catalog.findById(id).populate("products");
+
     if (!catalog) {
       return res.status(404).json({ message: "Catalog not found" });
     }
 
-    // mapped all product to the paticular catalog
-    const products = await Product.find({ catalogId: id });
-
-    res.status(200).json({ catalog, products });
+    res.status(200).json(catalog);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -75,16 +73,8 @@ const deleteCatalog = async (req, res) => {
 // Get all catalogs and all product at a one time
 const getAllCatalogsAndProducts = async (req, res) => {
   try {
-    // Fetch both catalogs and products
-    const [catalogs, products] = await Promise.all([
-      Catalog.find({}),
-      Product.find({}).populate("catalogId", "name description"),
-    ]);
-
-    res.status(200).json({
-      catalogs,
-      products,
-    });
+    const catalogs = await Catalog.find({}).populate("products");
+    res.status(200).json(catalogs);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -12,8 +12,16 @@ const CatalogSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+CatalogSchema.virtual("products", {
+  ref: "Product",
+  localField: "_id",
+  foreignField: "catalogId",
+});
 
 const Catalog = mongoose.model("Catalog", CatalogSchema);
 module.exports = Catalog;
